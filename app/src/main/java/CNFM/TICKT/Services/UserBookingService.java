@@ -5,7 +5,9 @@ import CNFM.TICKT.util.UserServiceUtil;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -19,7 +21,7 @@ public class UserBookingService {
 
     private User user;
 
-    private final String USER_PATH = "CNFM/TICKT/localdb/Train.Json";
+    private final String USER_FILE_PATH = "app/src/main/resources/Localdb/User.json";
 
     public UserBookingService(User user) throws IOException {
         this.user = user;
@@ -31,7 +33,19 @@ public class UserBookingService {
     }
 
     private void loadUserListFromFile() throws IOException {
-        userList = objectMapper.readValue(new File(USER_PATH), new TypeReference<List<User>>() {});
+        InputStream is = getClass()
+                .getClassLoader()
+                .getResourceAsStream("Localdb/User.json");
+
+        if (is == null) {
+            throw new FileNotFoundException("User.json not found in resources/Localdb");
+        }
+
+        userList = objectMapper.readValue(
+                is,
+                new TypeReference<List<User>>() {
+                }
+        );
     }
 
     public Boolean loginUser(){
@@ -52,7 +66,7 @@ public class UserBookingService {
     }
 
     private void saveUserListToFile() throws IOException {
-        File usersFile = new File(USER_PATH);
+        File usersFile = new File(USER_FILE_PATH);
         objectMapper.writeValue(usersFile, userList);
     }
 
@@ -75,7 +89,7 @@ public class UserBookingService {
             return Boolean.FALSE;
         }
 
-        String finalTicketId1 = ticketId;  //Because strings are immutable
+        String finalTicketId1 = ticketId;
         boolean removed = user.getTicketsBooked().removeIf(ticket -> ticket.getTicketId().equals(finalTicketId1));
 
         String finalTicketId = ticketId;

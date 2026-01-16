@@ -7,16 +7,16 @@
       [0, 0, 0, 0, 0, 0],
       [0, 0, 0, 0, 0, 0],
       [0, 0, 0, 0, 0, 0]
-      ],
-      "station_times": {
-        "banglore": "13:50:00",
-        "Secunderabad": "08:30:00",
-        "warnagal": "10:30:00"
-      },
+    ],
+    "station_times": {
+      "banglore": "13:50:00",
+      "Secunderabad": "08:30:00",
+      "warangal": "10:30:00"
+    },
     "stations": [
+      "banglore",
       "Secunderabad",
-      "warnagal",
-      "banglore"
+      "warangal"
     ]
   }
 ]
